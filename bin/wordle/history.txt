@@ -1,0 +1,1 @@
+Number of trials: 6, result: lost 😞

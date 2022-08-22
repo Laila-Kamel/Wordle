@@ -1,0 +1,1 @@
+Number of trials: 1, result: win 😃
