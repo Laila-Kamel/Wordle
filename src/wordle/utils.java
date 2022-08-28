@@ -10,7 +10,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
@@ -18,25 +22,31 @@ import org.json.simple.*;
 import org.json.simple.parser.*;
 
 public class utils {
+	
+	// Reset
+    public static final String RESET = "\033[0m";  // Text Reset
 
-	public utils() {
-		// TODO Auto-generated constructor stub
-	}
+    // Regular Colors
+    public static final String GREEN = "\033[0;32m";   // GREEN
+    public static final String YELLOW = "\033[0;33m";  // YELLOW
+    
+    
+    //read the word list from the file and return it into an array of words or strings
 	public static String[] getWords() throws IOException, ParseException {
-		JSONParser parser=new JSONParser();
 		JSONArray wordsJsonArray=new JSONArray();
 		List<String> wordsList=new ArrayList<String>();
 		String[] words = null;
 		try {
+			//convert the JSON wordList to Object
 			Object obj=new JSONParser().parse(new FileReader("C:\\Users\\laila\\eclipse-workspace\\Wordle\\src\\wordle\\word-list.json"));
+			//convert the object to JSON Array
 			wordsJsonArray=(JSONArray)obj;
+			//convert the JsonArray to list
 			for(Object string:wordsJsonArray) {
 				wordsList.add(string.toString());
 			}
+			//convert the List to array of strings
 			words=wordsList.toArray(new String[wordsList.size()]);
-//			for(String word:words) {
-//				System.out.println(word);
-//			}
 		} 
 		catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -45,22 +55,22 @@ public class utils {
 		return words;
 
 	}
+	//method that chooses a random word from the array of words
 	public static String getRandomWord(String[] words) {
 		Random random=new Random();
-		int randomNum=random.nextInt(words.length);
+		int randomNum=random.nextInt(words.length);// set the range of random index to array length
 		return words[randomNum];
 		
 	}
 	public static void checkWord(String word) throws IOException, ParseException {
 		boolean won=false;
-		int counter=0;
+		int counter=0; //count how many trials the user tried
 		Scanner sc=new Scanner(System.in);
 		System.out.println("Please enter a word");
 		String trial=sc.next();
 //		System.out.println(trial);
 		while(!won&&counter<5) 
 		{
-//			turn++;
 			if(trial.length()<5) {
 				System.out.println("You entered less than 5 letters. Try again!");
 			}
@@ -69,6 +79,7 @@ public class utils {
 			}
 			else {
 				if(word.equals(trial)) {
+					System.out.println(GREEN+trial.toUpperCase()+RESET);
 					System.out.println("Congratulations!!!....You win");
 					won=true;
 					getWordDefinition(word);
@@ -93,7 +104,7 @@ public class utils {
 	}
 	
 	
-	
+	// end of game and call write to file method
 	public static void endGame(int counter, boolean won) {
 		Trial t=new Trial(counter+1,won);
 		int trial=t.trials;
@@ -115,15 +126,15 @@ public class utils {
 		}
 	}
 	
-	
+	// write the history to a file
 	public static void writeToFile(int numOfTrial, String result, String em) throws IOException {
 		File historyFile=new File("C:\\Users\\laila\\eclipse-workspace\\Wordle\\src\\wordle\\history.txt");
-		try (FileWriter writer = new FileWriter(historyFile)) {
-			String text=String.format("Number of trials: %d, result: %s %s",numOfTrial,result,em);
+		
+		try (FileWriter writer = new FileWriter(historyFile,true)) {
+			String text=String.format("Number of trials: %d, result: %s %s\n",numOfTrial,result,em);
 			writer.write(text);
 			copyToClipboard(text);
 		}
-		
 	}
 	
 	
@@ -132,18 +143,23 @@ public class utils {
 
 		for(int i=0;i<wordArr.length;i++) {
 			if(wordArr[i].equals(randomWord.substring(i,i+1))) {
-				System.out.println("letter "+wordArr[i]+" is in the right position");
+//				System.out.println("letter "+wordArr[i]+" is in the right position");
+//				wordArr[i]=wordArr[i].toUpperCase();
+				wordArr[i]=GREEN+wordArr[i].toUpperCase()+RESET;
 			}
 			else if(randomWord.contains(wordArr[i])){
-				System.out.println("letter "+wordArr[i]+" exists but in the wrong place");
+//				System.out.println("letter "+wordArr[i]+" exists but in the wrong place");
+				wordArr[i]=YELLOW+wordArr[i].toUpperCase()+RESET;
 			}
 			else {
-				System.out.printf("letter %s doesn't exist in the word\n",wordArr[i]);
+//				System.out.printf("letter %s doesn't exist in the word\n",wordArr[i]);
+				wordArr[i]="_";
 			}
 		}
+		System.out.println(wordArr[0]+" "+wordArr[1]+" "+wordArr[2]+" "+wordArr[3]+" "+wordArr[4]);
 	}
 	
-	
+
 	public static void getWordDefinition(String word) throws IOException, ParseException {
 		String url=String.format("https://api.dictionaryapi.dev/api/v2/entries/en/%s",word);
 		URL stringUrl=new URL(url);

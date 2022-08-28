@@ -1,1 +1,11 @@
+Number of trials: 2, result: win 😃
+Number of trials: 1, result: win 😃
 Number of trials: 6, result: lost 😞
+Number of trials: 1, result: win 😃
+Number of trials: 2, result: win 😃
+Number of trials: 1, result: win 😃
+Number of trials: 1, result: win 😃
+Number of trials: 1, result: win 😃
+Number of trials: 1, result: win 😃
+Number of trials: 1, result: win 😃
+Number of trials: 2, result: win 😃
