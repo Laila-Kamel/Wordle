@@ -15,3 +15,4 @@ Number of trials: 2, result: win 😃
 Number of trials: 2, result: win 😃
 Number of trials: 4, result: win 😃
 Number of trials: 3, result: win 😃
+Number of trials: 4, result: win 😃

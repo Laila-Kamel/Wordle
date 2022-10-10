@@ -38,7 +38,7 @@ public class utils {
 		String[] words = null;
 		try {
 			//convert the JSON wordList to Object
-			Object obj=new JSONParser().parse(new FileReader("<word-list.json FILE PATH>"));
+			Object obj=new JSONParser().parse(new FileReader("C:\\Users\\laila\\eclipse-workspace\\Wordle\\src\\wordle\\word-list.json"));
 			//convert the object to JSON Array
 			wordsJsonArray=(JSONArray)obj;
 			//convert the JsonArray to list
@@ -128,7 +128,7 @@ public class utils {
 	
 	// write the history to a file
 	public static void writeToFile(int numOfTrial, String result, String em) throws IOException {
-		File historyFile=new File(<FILEPATH>);
+		File historyFile=new File("C:\\Users\\laila\\eclipse-workspace\\Wordle\\src\\wordle\\history.txt");
 		
 		try (FileWriter writer = new FileWriter(historyFile,true)) {
 			String text=String.format("Number of trials: %d, result: %s %s\n",numOfTrial,result,em);
